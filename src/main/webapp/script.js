@@ -12,8 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+function loadPage() {
+  checkLog();
+}
+
 //** Checks login status and display HTML elements accordingly. */
 async function checkLog() {
+  var loggedIn;
   const response = await fetch("/login");
   const loginInfo = await response.json();
 
@@ -25,11 +30,17 @@ async function checkLog() {
   if (loginInfo.loggedIn === true) {
     document.getElementById("profile").style.visibility = "visible";
     logButton.innerText = "LOGOUT";
+    document.getElementById("route-creation-section").style.visibility =
+      "visible";
+    loggedIn = true;
     // User is not logged in.
   } else {
     document.getElementById("profile").style.visibility = "hidden";
     logButton.innerText = "LOGIN";
+    document.getElementById("login-required").style.visibility = "visible";
+    loggedIn = false;
   }
+  return loggedIn;
 }
 
 // Show a marker's settings area.
