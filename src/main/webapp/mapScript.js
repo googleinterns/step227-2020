@@ -14,7 +14,6 @@
 
 let map;
 var markersArray = [];
-var coOwnersArray = [];
 
 function initMap() {
   // Create a map object, and include the MapTypeId to add
