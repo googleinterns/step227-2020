@@ -14,6 +14,7 @@
 
 let map;
 var markersArray = [];
+var coOwnersArray = [];
 
 function initMap() {
   // Create a map object, and include the MapTypeId to add
@@ -160,4 +161,12 @@ async function deletePlace(contentId) {
         console.log("Unsuccessful deletion");
       }
     });
+}
+
+function updateShareList() {
+  let friendCode = document.getElementById("friend-code").value;
+  coOwnersArray.push(friendCode);
+
+  var section = document.getElementById("share-section");
+  section.classList.toggle("show");
 }
