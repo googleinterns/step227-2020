@@ -14,7 +14,6 @@
 
 package com.google.sps.data;
 
-// TODO(#13): Add owner's id property.
 /** Google maps's markers's class. */
 public class Marker {
   private double lat;
