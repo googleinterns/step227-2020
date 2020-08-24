@@ -213,14 +213,30 @@ a#logout-link i {
 .content-item {
   display: grid;
   grid-gap: 40px;
-  grid-template-columns: 230px 230px 230px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   margin-top: 25px;
-  width: 800px;
-  margin: auto;
 }
 
-#fav-places.content-item {
-  grid-template-columns: 140px 140px 140px 140px 140px;
+/* Design for cards's container. */
+.row {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 10px -5px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.column {
+  display: table-cell;
+  float: left;
+  width: 230px;
+  padding: 0 10px;
 }
 
 /* Cards design. */
@@ -229,55 +245,15 @@ a#logout-link i {
   transition: 0.3s;
   text-align: center;
   height: 255px;
-  width: 230px;
   border-radius: 5px;
-}
-
-#fav-places .card {
-  height: 40px;
-  width: 140px;
-}
-
-.card .fav-place-desc {
-  position: absolute;
-  margin-top: 10px;
-  margin-left: 30px;
-}
-
-
-.toggle-popup {
-  text-align: center;
-  height: 100%;
-  width: 100%;
-}
-
-.popups {
-  visibility: hidden;
-  width: 150px;
-  height: 230px;
-  z-index: 2;
-  position: absolute;
-  margin-top: -235px;
-  margin-left: -5px;
-
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(1px);
-  border-radius: 5px;
-  border: 1px solid black;
-}
-
-.popups.show {
-  visibility: visible;
-  -webkit-animation: fadeIn 1s;
-  animation: fadeIn 1s;
-}
-
-.card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
 .container {
   text-align: center;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
 img.route-img {
@@ -421,11 +397,83 @@ a:visited {
   color: grey;
 }
 
+/* Design for cards's container. */
+.fav-row {
+  text-align: center;
+  display: flex;
+  justify-content: left;
+  width: 750px;
+  max-width: 75%;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fav-row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.fav-column {
+  display: table-cell;
+  float: left;
+  width: 140px;
+  padding: 0 10px;
+}
+
+/* Cards design. */
+.fav-item {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  text-align: center;
+  height: 40px;
+  border-radius: 5px;
+}
+
+.fav-item .toggle-popup {
+  text-align: center;
+  height: 100%;
+  width: 100%;
+}
+
+.fav-item .fav-place-desc {
+  position: absolute;
+  margin-top: 10px;
+  margin-left: 30px;
+}
+
+.fav-item:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
 .fa-map-marker-alt {
   color: rgb(190, 20, 20);
   float: left;
   margin-top: 10px;
   margin-left: 10px;
+}
+
+.popups {
+  visibility: hidden;
+  width: 150px;
+  height: 230px;
+  z-index: 2;
+  position: absolute;
+  margin-top: -275px;
+  margin-left: -5px;
+
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(1px);
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+.popups.show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
 }
 
 /* Add animation (fade in the popup) */

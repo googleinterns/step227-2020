@@ -22,7 +22,7 @@ function openContent(contentName) {
     contentItems[i].style.display = "none";
   }
 
-  document.getElementById(contentName).style.display = "block";
+  document.getElementById(contentName).style.display = "grid";
 
   // Update button desing.
   var barItems = document.getElementsByClassName("bar-item");
@@ -46,11 +46,12 @@ function showFavPlaceDetails(contentName, createClosePopup = true) {
     if (popups[i] == popup) {
       continue;
     }
-    popups[i].style.visibility = "hidden";
+    if (popups[i].classList.contains('show')) {
+      popup.classList.toggle("show");
+    }
   }
 
   // Show popup.
-  popup.style.visibility = "visible";
   popup.classList.toggle("show");
 }
 
