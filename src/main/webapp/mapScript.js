@@ -15,6 +15,8 @@
 let map;
 var markersArray = [];
 var listener;
+var editorsArray = [];
+var viewersArray = [];
 
 function initMap() {
   // Create a map object, and include the MapTypeId to add
@@ -130,9 +132,10 @@ function updateMarkerSettings(contentId) {
 
 async function createRoute() {
   var routeName = document.getElementById("route-name").value,
-    publicity = Boolean(document.getElementById("publicity").value == 1),
-    hour = document.getElementById("start-hour").value,
-    minute = document.getElementById("start-minute").value;
+    routeId = 0;
+  (isPublic = Boolean(document.getElementById("publicity").value == 1)),
+    (startHour = document.getElementById("start-hour").value),
+    (startMinute = document.getElementById("start-minute").value);
   if (routeName == "") {
     alert("Please add a name to your new route!");
   } else {
@@ -142,11 +145,9 @@ async function createRoute() {
     }
 
     var routeData = {
+      routeId: routeId,
       routeName: routeName,
-      markersData: markersData,
-      publicity: publicity,
-      hour: hour,
-      minute: minute,
+      editorsArray: editorsArray,
     };
     console.log(routeData);
 
@@ -179,11 +180,22 @@ async function createRoute() {
       markersArray[i].marker.setMap(null);
     }
     markersArray = [];
+    editorsArray = [];
     alert(
       "Route successfully created!\nYou can see new created routes on your profile page!"
     );
   }
   loadRoutes();
+}
+
+function updateShareList() {
+  // For now lets assume that Friend Code is ID in datastore.
+  // For now letc assume that all co-owners are editors.
+  editorsArray.push(document.getElementById("friend-code").value);
+
+  var section = document.getElementById("share-section");
+  // If section is visible it next line will make it invisible.
+  section.classList.toggle("show");
 }
 
 function publicRoute() {
