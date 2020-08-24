@@ -200,7 +200,7 @@ function updateShareList() {
   var section = document.getElementById("share-section");
   // If section is visible the next line will make it invisible and vice versa.
   section.classList.toggle("show");
-  document.getElementById("friend-code").value="";
+  document.getElementById("friend-code").value = "";
 }
 
 function publicRoute() {
