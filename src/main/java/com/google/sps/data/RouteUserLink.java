@@ -25,14 +25,12 @@ public class RouteUserLink {
   public RouteUserLink(Long newUserId, Long newRouteId, int type) {
     userId = newUserId;
     routeId = newRouteId;
-
     type = type;
   }
 
   public RouteUserLink() {
     userId = 0L;
     routeId = 0L;
-
     type = -1;
   }
 

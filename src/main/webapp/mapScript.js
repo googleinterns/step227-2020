@@ -194,7 +194,7 @@ async function createRoute() {
 
 function updateShareList() {
   // For now lets assume that Friend Code is ID in datastore.
-  // For now letc assume that all co-owners are editors.
+  // For now lets assume that all co-owners are editors.
   editorsArray.push(document.getElementById("friend-code").value);
 
   var section = document.getElementById("share-section");
