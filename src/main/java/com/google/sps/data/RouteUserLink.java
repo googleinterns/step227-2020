@@ -19,7 +19,7 @@ public class RouteUserLink {
   private Long userId;
   private Long routeId;
 
-  // 1 - owner, 2 - editor, 3 - viwer
+  // 1 - owner, 2 - editor, 3 - viewer
   private int type;
 
   public RouteUserLink(Long newUserId, Long newRouteId, int type) {
