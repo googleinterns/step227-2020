@@ -147,7 +147,7 @@ async function createRoute() {
     var routeData = {
       routeId: routeId,
       routeName: routeName,
-      editorsArray: editorsArray,
+      editorsArray: editorsArray
     };
     console.log(routeData);
 

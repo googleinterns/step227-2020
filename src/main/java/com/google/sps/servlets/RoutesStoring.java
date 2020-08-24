@@ -32,45 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 @SuppressWarnings("serial")
 @WebServlet("/storeRoute")
 public class RoutesStoring extends HttpServlet {
-<<<<<<< HEAD
-  static class RouteData {
-    String routeName;
-    Marker[] markersData;
-    boolean publicity;
-    int hour;
-    int minute;
-
-    RouteData(String routeName, Marker[] markersData, boolean publicity, int hour, int minute) {
-      this.routeName = routeName;
-      this.markersData = markersData;
-      this.publicity = publicity;
-      this.hour = hour;
-      this.minute = minute;
-    }
-
-    String getRouteName() {
-      return routeName;
-    }
-
-    Marker[] getMarkersData() {
-      return markersData;
-    }
-
-    boolean getPublicity() {
-      return publicity;
-    }
-
-    int getHour() {
-      return hour;
-    }
-
-    int getMinute() {
-      return minute;
-    }
-  }
-
-=======
->>>>>>> a963058c98971a989a302f38466881f18d0209ba
   static class Error {
     String errorMessage;
 
@@ -109,15 +70,9 @@ public class RoutesStoring extends HttpServlet {
     Route gsonObject = gson.fromJson(requestBody, Route.class);
     List<Marker> routeMarkers = gsonObject.getRouteMarkers();
     String routeName = gsonObject.getRouteName();
-<<<<<<< HEAD
-    boolean publicity = gsonObject.getPublicity();
-    int hour = gsonObject.getHour();
-    int minute = gsonObject.getMinute();
-=======
     boolean isPublic = gsonObject.getIsPublic();
     long startHour = gsonObject.getStartHour();
     long startMinute = gsonObject.getStartMinute();
->>>>>>> a963058c98971a989a302f38466881f18d0209ba
 
     Key userKey = KeyFactory.createKey("User", userService.getCurrentUser().getUserId());
 
