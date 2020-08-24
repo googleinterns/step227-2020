@@ -63,8 +63,8 @@ public class LoadAllRoutes extends HttpServlet {
             new Marker(
                 (double) markerEntity.getProperty("lat"),
                 (double) markerEntity.getProperty("lng"),
-                (Long) markerEntity.getProperty("stayHour"),
-                (Long) markerEntity.getProperty("stayMinute"),
+                (int) markerEntity.getProperty("stayHour"),
+                (int) markerEntity.getProperty("stayMinute"),
                 (String) markerEntity.getProperty("markerName"));
         markers.add(marker);
       }

@@ -147,7 +147,11 @@ async function createRoute() {
     var routeData = {
       routeId: routeId,
       routeName: routeName,
-      editorsArray: editorsArray
+      routeMarkers: markersData,
+      isPublic: isPublic,
+      startHour: startHour,
+      startMinute: startMinute,
+      editorsArray: editorsArray,
     };
     console.log(routeData);
 
@@ -194,8 +198,9 @@ function updateShareList() {
   editorsArray.push(document.getElementById("friend-code").value);
 
   var section = document.getElementById("share-section");
-  // If section is visible it next line will make it invisible.
+  // If section is visible the next line will make it invisible and vice versa.
   section.classList.toggle("show");
+  document.getElementById("friend-code").value="";
 }
 
 function publicRoute() {
