@@ -46,8 +46,8 @@ function showFavPlaceDetails(contentName, createClosePopup = true) {
     if (popups[i] == popup) {
       continue;
     }
-    if (popups[i].classList.contains('show')) {
-      popup.classList.toggle("show");
+    if (popups[i].classList.contains("show")) {
+      popups[i].classList.remove("show");
     }
   }
 
