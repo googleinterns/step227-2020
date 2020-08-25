@@ -31,14 +31,6 @@ import javax.servlet.http.HttpServletResponse;
 @SuppressWarnings("serial")
 @WebServlet("/user-routes")
 public class ProfileRoutes extends HttpServlet {
-  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
-    String value = request.getParameter(name);
-    if (value == null || value.isEmpty()) {
-      return defaultValue;
-    }
-    return value;
-  }
-
   /** Return all routes connected with the user. */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -46,7 +38,6 @@ public class ProfileRoutes extends HttpServlet {
     UserService userService = UserServiceFactory.getUserService();
 
     List<Route> connectedRoutes = new ArrayList<>();
-    User currentUser;
 
     if (userService.isUserLoggedIn()) {
       String userId = userService.getCurrentUser().getUserId();
@@ -57,15 +48,20 @@ public class ProfileRoutes extends HttpServlet {
         Query query = new Query("RouteUserLink").setAncestor(userKey);
         List<Entity> results = datastore.prepare(query).asList(FetchOptions.Builder.withDefaults());
 
-        Entity connection;
-        Route newRoute;
+        List<Key> routesKeys = new ArrayList<Key>();
         for (int i = 0; i < results.size(); i++) {
-          connection =
-              datastore.get(
-                  KeyFactory.createKey("Route", (Long) results.get(i).getProperty("routeId")));
+          routesKeys.add(
+            KeyFactory.createKey("Route", (Long) results.get(i).getProperty("routeId"))
+          );
+        }
+
+        Map<Key, Entity> routesList = datastore.get(routesKeys);
+
+        Route newRoute;
+        for (Entity connection : routesList.values()) {
           newRoute =
               new Route(
-                  0L,
+                  connection.getKey().getId(),
                   (String) connection.getProperty("routeName"),
                   (boolean) connection.getProperty("isPublic"),
                   (Long) connection.getProperty("startHour"),
@@ -74,7 +70,7 @@ public class ProfileRoutes extends HttpServlet {
         }
 
       } catch (Exception e) {
-        // TODO: return useful exception.
+        // TODO(#14): Catch more specific exceptions.
       }
     }
     Gson gson = new Gson();
