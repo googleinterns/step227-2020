@@ -46,7 +46,7 @@ function showFavPlaceDetails(contentName, createClosePopup = true) {
     if (popups[i] == popup) {
       continue;
     }
-    if (popups[i].classList.contains('show')) {
+    if (popups[i].classList.contains("show")) {
       popup.classList.toggle("show");
     }
   }
@@ -57,6 +57,8 @@ function showFavPlaceDetails(contentName, createClosePopup = true) {
 
 function loadUserInfo() {
   addLogoutLink();
+  loadRoutes();
+  console.log("Load user's routes");
 
   fetch("/user-info")
     .then((response) => response.json())
@@ -78,4 +80,40 @@ async function addLogoutLink() {
   const loginInfo = await response.json();
 
   document.getElementById("logout-link").href = loginInfo.actionUrl;
+}
+
+// Load all routes for the logged user.
+function loadRoutes() {
+  fetch("/user-routes")
+    .then((response) => response.json())
+    .then((routesList) => {
+      for (i in routesList) {
+        addRoute(routesList[i]);
+      }
+    });
+}
+
+function addRoute(newRoute) {
+  let card = document.createElement("div");
+  let container = document.createElement("div");
+  let routeDetails = document.createElement("div");
+  let routeImg = document.createElement("img");
+  let routeRating = document.createElement("div");
+
+  card.classList.add("card");
+  container.classList.add("container");
+  routeDetails.classList.add("route-details");
+  routeImg.classList.add("route-img");
+  routeRating.classList.add("rating");
+
+  routeDetails.innerHTML = newRoute["routeName"];
+  let emptyStart = '<span class="far fa-star"></span>';
+  routeRating.innerHTML = emptyStart.repeat(5);
+
+  card.appendChild(container);
+  container.appendChild(routeDetails);
+  container.appendChild(routeImg);
+  container.appendChild(routeRating);
+
+  document.getElementById("completed-routes").appendChild(card);
 }
