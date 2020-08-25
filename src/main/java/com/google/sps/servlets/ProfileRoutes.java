@@ -20,7 +20,6 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.sps.data.Route;
-import com.google.sps.data.User;
 import java.io.IOException;
 import java.util.*;
 import javax.servlet.annotation.WebServlet;
@@ -51,8 +50,7 @@ public class ProfileRoutes extends HttpServlet {
         List<Key> routesKeys = new ArrayList<Key>();
         for (int i = 0; i < results.size(); i++) {
           routesKeys.add(
-            KeyFactory.createKey("Route", (Long) results.get(i).getProperty("routeId"))
-          );
+              KeyFactory.createKey("Route", (Long) results.get(i).getProperty("routeId")));
         }
 
         Map<Key, Entity> routesList = datastore.get(routesKeys);
