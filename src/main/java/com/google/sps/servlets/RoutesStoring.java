@@ -67,15 +67,15 @@ public class RoutesStoring extends HttpServlet {
         request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
     // Convert it to Gson Object.
-    Route gsonObject = gson.fromJson(requestBody, Route.class);
-    List<Marker> routeMarkers = gsonObject.getRouteMarkers();
-    List<Long> editorsArray = gsonObject.getEditorsArray();
-    String routeName = gsonObject.getRouteName();
-    boolean isPublic = gsonObject.getIsPublic();
-    boolean isCompleted = gsonObject.getIsCompleted();
-    long startHour = gsonObject.getStartHour();
-    long startMinute = gsonObject.getStartMinute();
-    double rating = gsonObject.getRating();
+    Route routeObject = gson.fromJson(requestBody, Route.class);
+    List<Marker> routeMarkers = routeObject.getRouteMarkers();
+    List<Long> editorsArray = routeObject.getEditorsArray();
+    String routeName = routeObject.getRouteName();
+    boolean isPublic = routeObject.getIsPublic();
+    boolean isCompleted = routeObject.getIsCompleted();
+    long startHour = routeObject.getStartHour();
+    long startMinute = routeObject.getStartMinute();
+    double rating = routeObject.getRating();
 
     Key userKey = KeyFactory.createKey("User", userService.getCurrentUser().getUserId());
 

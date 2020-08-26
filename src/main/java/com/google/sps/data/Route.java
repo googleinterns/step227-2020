@@ -72,6 +72,7 @@ public final class Route {
     this.startHour = startHour;
     this.startMinute = startMinute;
     this.rating = rating;
+  }
 
   public void setRouteId(long routeId) {
     this.routeId = routeId;
