@@ -32,6 +32,16 @@ import javax.servlet.http.HttpServletResponse;
 @SuppressWarnings("serial")
 @WebServlet("/user-routes")
 public class ProfileRoutes extends HttpServlet {
+  static class RouteWithType {
+    Route route;
+    Long type;
+
+    public RouteWithType(Route route, Long type) {
+      this.route = route;
+      this.type = type;
+    }
+  }
+
   /** Return all routes connected with the user. */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -39,7 +49,7 @@ public class ProfileRoutes extends HttpServlet {
     UserService userService = UserServiceFactory.getUserService();
     Gson gson = new Gson();
 
-    List<Route> connectedRoutes = new ArrayList<>();
+    List<RouteWithType> connectedRoutes = new ArrayList<>();
 
     if (userService.isUserLoggedIn()) {
       String userId = userService.getCurrentUser().getUserId();
