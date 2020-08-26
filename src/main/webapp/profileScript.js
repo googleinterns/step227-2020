@@ -89,12 +89,12 @@ function loadRoutes() {
     .then((routesList) => {
       console.log(routesList);
       for (i in routesList) {
-        addRoute(routesList[i]["route"], routesList[i]["type"]);
+        addRoute(routesList[i]);
       }
     });
 }
 
-function addRoute(newRoute, type) {
+function addRoute(newRoute) {
   let card = document.createElement("div");
   let container = document.createElement("div");
   let routeDetails = document.createElement("div");
