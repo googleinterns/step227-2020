@@ -30,23 +30,13 @@ import javax.servlet.http.HttpServletResponse;
 @SuppressWarnings("serial")
 @WebServlet("/user-routes")
 public class ProfileRoutes extends HttpServlet {
-  static class RouteWithType {
-    Route route;
-    Long type;
-
-    public RouteWithType(Route route, Long type) {
-      this.route = route;
-      this.type = type;
-    }
-  }
-
   /** Return all routes connected with the user. */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     UserService userService = UserServiceFactory.getUserService();
 
-    List<RouteWithType> connectedRoutes = new ArrayList<>();
+    List<Route> connectedRoutes = new ArrayList<>();
 
     if (userService.isUserLoggedIn()) {
       String userId = userService.getCurrentUser().getUserId();
@@ -66,7 +56,6 @@ public class ProfileRoutes extends HttpServlet {
         Map<Key, Entity> routesList = datastore.get(routesKeys);
 
         Route newRoute;
-        RouteWithType newRouteWithType;
         int i = 0;
         for (Entity connection : routesList.values()) {
           newRoute =
@@ -77,9 +66,10 @@ public class ProfileRoutes extends HttpServlet {
                   (boolean) connection.getProperty("isCompleted"),
                   (Long) connection.getProperty("startHour"),
                   (Long) connection.getProperty("startMinute"),
-                  (double) connection.getProperty("rating"));
-          newRouteWithType = new RouteWithType(newRoute, (Long) results.get(i).getProperty("type"));
-          connectedRoutes.add(newRouteWithType);
+                  (Long) connection.getProperty("numberOfRatings"),
+                  (Double) connection.getProperty("sumOfRatings"));
+          newRoute.setUserAccess(((Long) results.get(i).getProperty("userAccess")).intValue());
+          connectedRoutes.add(newRoute);
           i++;
         }
 

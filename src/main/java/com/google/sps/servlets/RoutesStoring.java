@@ -44,6 +44,22 @@ public class RoutesStoring extends HttpServlet {
     }
   }
 
+  public enum UserAccessType {
+    OWNER(1),
+    EDITOR(2),
+    VIEWER(3);
+
+    private int numericValue;
+
+    private UserAccessType(int newValue) {
+      this.numericValue = newValue;
+    }
+
+    public int getValue() {
+      return numericValue;
+    }
+  }
+
   String json;
 
   /** Processes POST request by storing routes. */
@@ -75,7 +91,8 @@ public class RoutesStoring extends HttpServlet {
     boolean isCompleted = routeObject.getIsCompleted();
     long startHour = routeObject.getStartHour();
     long startMinute = routeObject.getStartMinute();
-    double rating = routeObject.getRating();
+    long numberOfRatings = routeObject.getNumberOfRatings();
+    double sumOfRatings = routeObject.getSumOfRatings();
 
     Key userKey = KeyFactory.createKey("User", userService.getCurrentUser().getUserId());
 
@@ -89,20 +106,21 @@ public class RoutesStoring extends HttpServlet {
       routeEntity.setProperty("isCompleted", isCompleted);
       routeEntity.setProperty("startHour", startHour);
       routeEntity.setProperty("startMinute", startMinute);
-      routeEntity.setProperty("rating", rating);
+      routeEntity.setProperty("numberOfRatings", numberOfRatings);
+      routeEntity.setProperty("sumOfRatings", sumOfRatings);
 
       datastore.put(routeEntity);
       for (long userId : editorsArray) {
         Entity linkEntity = new Entity("RouteUserLink", KeyFactory.createKey("User", userId));
         linkEntity.setProperty("routeId", routeEntity.getKey().getId());
-        linkEntity.setProperty("type", 2);
+        linkEntity.setProperty("userAccess", UserAccessType.EDITOR.getValue());
         // Add entity for editor.
         datastore.put(linkEntity);
       }
 
       Entity linkEntity = new Entity("RouteUserLink", userEntity.getKey());
       linkEntity.setProperty("routeId", routeEntity.getKey().getId());
-      linkEntity.setProperty("type", 1);
+      linkEntity.setProperty("userAccess", UserAccessType.OWNER.getValue());
       // Add entity for owner.
       datastore.put(linkEntity);
 

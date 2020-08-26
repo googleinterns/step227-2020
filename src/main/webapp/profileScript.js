@@ -89,12 +89,18 @@ function loadRoutes() {
     .then((routesList) => {
       console.log(routesList);
       for (i in routesList) {
-        addRoute(routesList[i]["route"], routesList[i]["type"]);
+        addRoute(routesList[i]);
       }
     });
 }
 
-function addRoute(newRoute, type) {
+var UserAccessType = {
+  OWNER: 1,
+  EDITOR: 2,
+  VIEWER: 3,
+};
+
+function addRoute(newRoute) {
   let card = document.createElement("div");
   let container = document.createElement("div");
   let routeDetails = document.createElement("div");
@@ -112,15 +118,20 @@ function addRoute(newRoute, type) {
   let halfStar = '<span class="fas fa-star-half-alt"></span>';
   let fullStar = '<span class="fas fa-star checked"></span>';
 
-  let ratingCopy = newRoute["rating"];
-  let numberOfFullStars = 0;
-  while (ratingCopy >= 1) {
-    numberOfFullStars += 1;
-    ratingCopy -= 1;
+  let ratingCopy = 0;
+  if (newRoute["numberOfRatings"] != 0) {
+    ratingCopy = newRoute["sumOfRatings"] / newRoute["numberOfRatings"];
   }
+  let numberOfFullStars = Math.floor(ratingCopy);
+  ratingCopy -= numberOfFullStars;
+
   let numberOfHalfStars = 0;
-  if (ratingCopy > 0) {
+  if (ratingCopy < 0.2) {
+    numberOfHalfStars = 0;
+  } else if (ratingCopy <= 0.8) {
     numberOfHalfStars = 1;
+  } else {
+    numberOfFullStars += 1;
   }
 
   routeRating.innerHTML =
@@ -133,8 +144,7 @@ function addRoute(newRoute, type) {
   container.appendChild(routeImg);
   container.appendChild(routeRating);
 
-  // 2 - user is editor, 1 - user is owner
-  if (newRoute["type"] == 2) {
+  if (newRoute["userAccess"] != UserAccessType.OWNER) {
     document.getElementById("shared-routes").appendChild(card);
   } else if (newRoute["isCompleted"]) {
     document.getElementById("completed-routes").appendChild(card);

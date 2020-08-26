@@ -26,7 +26,9 @@ public final class Route {
   private long startMinute;
   private List<Marker> routeMarkers;
   private List<Long> editorsArray;
-  private double rating;
+  private long numberOfRatings;
+  private double sumOfRatings;
+  private int userAccess;
 
   public Route(
       long routeId,
@@ -37,7 +39,8 @@ public final class Route {
       long startMinute,
       List<Marker> routeMarkers,
       List<Long> editorsArray,
-      double rating) {
+      long numberOfRatings,
+      double sumOfRatings) {
     this.routeId = routeId;
     this.routeName = routeName;
     this.isPublic = isPublic;
@@ -46,7 +49,8 @@ public final class Route {
     this.startMinute = startMinute;
     this.routeMarkers = routeMarkers;
     this.editorsArray = editorsArray;
-    this.rating = rating;
+    this.numberOfRatings = numberOfRatings;
+    this.sumOfRatings = sumOfRatings;
   }
 
   public Route(long routeId, String routeName, boolean isPublic, long startHour, long startMinute) {
@@ -64,18 +68,24 @@ public final class Route {
       boolean isCompleted,
       long startHour,
       long startMinute,
-      double rating) {
+      long numberOfRatings,
+      double sumOfRatings) {
     this.routeId = routeId;
     this.routeName = routeName;
     this.isPublic = isPublic;
     this.isCompleted = isCompleted;
     this.startHour = startHour;
     this.startMinute = startMinute;
-    this.rating = rating;
+    this.numberOfRatings = numberOfRatings;
+    this.sumOfRatings = sumOfRatings;
   }
 
   public void setRouteId(long routeId) {
     this.routeId = routeId;
+  }
+
+  public void setUserAccess(int userAccess) {
+    this.userAccess = userAccess;
   }
 
   public void setEditorsArray(List<Long> editorsArray) {
@@ -119,6 +129,14 @@ public final class Route {
   }
 
   public double getRating() {
-    return rating;
+    return sumOfRatings / numberOfRatings;
+  }
+
+  public Long getNumberOfRatings() {
+    return numberOfRatings;
+  }
+
+  public double getSumOfRatings() {
+    return sumOfRatings;
   }
 }
