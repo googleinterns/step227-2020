@@ -94,12 +94,6 @@ function loadRoutes() {
     });
 }
 
-var UserAccessType = {
-  OWNER: 1,
-  EDITOR: 2,
-  VIEWER: 3,
-};
-
 function addRoute(newRoute) {
   let card = document.createElement("div");
   let container = document.createElement("div");
@@ -144,7 +138,7 @@ function addRoute(newRoute) {
   container.appendChild(routeImg);
   container.appendChild(routeRating);
 
-  if (newRoute["userAccess"] != UserAccessType.OWNER) {
+  if (newRoute["userAccess"] != "OWNER") {
     document.getElementById("shared-routes").appendChild(card);
   } else if (newRoute["isCompleted"]) {
     document.getElementById("completed-routes").appendChild(card);

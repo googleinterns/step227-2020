@@ -20,6 +20,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.sps.data.Route;
+import com.google.sps.data.UserAccessType;
 import java.io.IOException;
 import java.util.*;
 import javax.servlet.annotation.WebServlet;
@@ -68,7 +69,8 @@ public class ProfileRoutes extends HttpServlet {
                   (Long) connection.getProperty("startMinute"),
                   (Long) connection.getProperty("numberOfRatings"),
                   (Double) connection.getProperty("sumOfRatings"));
-          newRoute.setUserAccess(((Long) results.get(i).getProperty("userAccess")).intValue());
+          int numericValue = ((Long) results.get(i).getProperty("userAccess")).intValue();
+          newRoute.setUserAccess(UserAccessType.getFromValue(numericValue));
           connectedRoutes.add(newRoute);
           i++;
         }

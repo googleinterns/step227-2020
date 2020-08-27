@@ -28,7 +28,7 @@ public final class Route {
   private List<Long> editorsArray;
   private long numberOfRatings;
   private double sumOfRatings;
-  private int userAccess;
+  private UserAccessType userAccess;
 
   public Route(
       long routeId,
@@ -84,7 +84,7 @@ public final class Route {
     this.routeId = routeId;
   }
 
-  public void setUserAccess(int userAccess) {
+  public void setUserAccess(UserAccessType userAccess) {
     this.userAccess = userAccess;
   }
 

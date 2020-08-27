@@ -20,6 +20,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.sps.data.Marker;
 import com.google.sps.data.Route;
+import com.google.sps.data.UserAccessType;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,22 +42,6 @@ public class RoutesStoring extends HttpServlet {
 
     String getErrorMessage() {
       return errorMessage;
-    }
-  }
-
-  public enum UserAccessType {
-    OWNER(1),
-    EDITOR(2),
-    VIEWER(3);
-
-    private int numericValue;
-
-    private UserAccessType(int newValue) {
-      this.numericValue = newValue;
-    }
-
-    public int getValue() {
-      return numericValue;
     }
   }
 
@@ -113,14 +98,14 @@ public class RoutesStoring extends HttpServlet {
       for (long userId : editorsArray) {
         Entity linkEntity = new Entity("RouteUserLink", KeyFactory.createKey("User", userId));
         linkEntity.setProperty("routeId", routeEntity.getKey().getId());
-        linkEntity.setProperty("userAccess", UserAccessType.EDITOR.getValue());
+        linkEntity.setProperty("userAccess", UserAccessType.EDITOR);
         // Add entity for editor.
         datastore.put(linkEntity);
       }
 
       Entity linkEntity = new Entity("RouteUserLink", userEntity.getKey());
       linkEntity.setProperty("routeId", routeEntity.getKey().getId());
-      linkEntity.setProperty("userAccess", UserAccessType.OWNER.getValue());
+      linkEntity.setProperty("userAccess", UserAccessType.OWNER);
       // Add entity for owner.
       datastore.put(linkEntity);
 
