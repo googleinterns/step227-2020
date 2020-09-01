@@ -19,21 +19,19 @@ import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStream;
 
 public class UserImage {
-  public static void uploadObject(
-      String projectId, String objectName, String filePath) throws IOException {
+  public static void uploadObject(String projectId, String objectName, InputStream fileToUpload)
+      throws IOException {
 
     String bucketName = "user-image-globes";
 
     Storage storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService();
     BlobId blobId = BlobId.of(bucketName, objectName);
     BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-    storage.create(blobInfo, Files.readAllBytes(Paths.get(filePath)));
+    storage.createFrom(blobInfo, fileToUpload);
 
-    System.out.println(
-        "File " + filePath + " uploaded to bucket " + bucketName + " as " + objectName);
+    System.out.println("File " + " uploaded to bucket " + bucketName + " as " + objectName);
   }
 }

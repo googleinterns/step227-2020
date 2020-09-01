@@ -15,52 +15,30 @@
 package com.google.sps.servlets;
 
 import com.google.appengine.api.datastore.*;
-import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
-import com.google.gson.Gson;
-import com.google.sps.data.Route;
 import com.google.sps.data.UserImage;
-import com.google.sps.data.UserAccessType;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import java.io.File;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-
-import javax.servlet.ServletException;
 import javax.servlet.http.Part;
 
 @SuppressWarnings("serial")
-@WebServlet("/profile-image")
 public class ProfileImage extends HttpServlet {
   /** Store user's image. */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    //get the file chosen by the user
+    // get the file chosen by the user
     try {
       Part filePart = request.getPart("avatar");
 
-      //get the InputStream to store the file somewhere
+      // get the InputStream to store the file somewhere
       InputStream fileInputStream = filePart.getInputStream();
 
-      File fileToSave = new File("WebContent/uploaded-files/" + filePart.getSubmittedFileName());
-      Files.copy(fileInputStream, fileToSave.toPath(), StandardCopyOption.REPLACE_EXISTING);
-      
-      //get the URL of the uploaded file
-      String fileUrl = "http://localhost:8080/uploaded-files/" + filePart.getSubmittedFileName();
-      
-      //You can get other form data too
-      String name = request.getParameter("name");
-
-      UserImage.uploadObject("theglobetrotter-step-2020", "image-1", fileUrl);
-    } catch(Exception e) {
+      UserImage.uploadObject(
+          "theglobetrotter-step-2020", filePart.getSubmittedFileName(), fileInputStream);
+    } catch (Exception e) {
       System.out.println("Catch error while saving profile image");
       System.out.println(e);
     }
