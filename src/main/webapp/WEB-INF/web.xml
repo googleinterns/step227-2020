@@ -6,8 +6,9 @@
 
   <servlet>
     <servlet-name>ProfileImage</servlet-name>
-    <servlet-class>ProfileImage</servlet-class>
-    <multipart-config />
+    <servlet-class>com.google.sps.servlets.ProfileImage</servlet-class>
+    <multipart-config>
+    </multipart-config>
   </servlet>
 
 </web-app>
