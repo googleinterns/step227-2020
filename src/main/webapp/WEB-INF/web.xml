@@ -10,9 +10,4 @@
     <multipart-config />
   </servlet>
 
-  <servlet-mapping>
-    <servlet-name>ProfileImage</servlet-name>
-    <url-pattern>/profile-image</url-pattern>
-  </servlet-mapping>
-
 </web-app>
