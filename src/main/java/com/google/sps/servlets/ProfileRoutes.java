@@ -84,6 +84,7 @@ public class ProfileRoutes extends HttpServlet {
         response.getWriter().println(gson.toJson(queryError));
       }
     }
+
     String json = gson.toJson(connectedRoutes);
 
     // Return response to the request.
