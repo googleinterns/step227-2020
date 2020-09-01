@@ -196,6 +196,16 @@
       <div id="new-route" class="content-item">
         <div class="card" onclick="location.href = '/index.html';"></div>
       </div>
+
+      <label for="avatar">Choose a profile picture:</label>
+
+      <form action="/profile-image" method="POST" enctype="multipart/form-data">
+        <input type="text" name="name" value="Ada">
+        <input type="file"
+          id="avatar" name="avatar"
+          accept="image/png, image/jpeg">
+        <input type="submit" value="Submit">
+      </form>
     </div>
   </body>
 </html>
