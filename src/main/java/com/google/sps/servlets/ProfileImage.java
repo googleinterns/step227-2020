@@ -49,10 +49,7 @@ public class ProfileImage extends HttpServlet {
 
       //get the InputStream to store the file somewhere
       InputStream fileInputStream = filePart.getInputStream();
-      
-      //for example, you can copy the uploaded file to the server
-      //note that you probably don't want to do this in real life!
-      //upload it to a file host like S3 or GCS instead
+
       File fileToSave = new File("WebContent/uploaded-files/" + filePart.getSubmittedFileName());
       Files.copy(fileInputStream, fileToSave.toPath(), StandardCopyOption.REPLACE_EXISTING);
       
@@ -64,7 +61,7 @@ public class ProfileImage extends HttpServlet {
 
       UserImage.uploadObject("theglobetrotter-step-2020", "image-1", fileUrl);
     } catch(Exception e) {
-      System.out.println("While saving profile image");
+      System.out.println("Catch error while saving profile image");
       System.out.println(e);
     }
 
