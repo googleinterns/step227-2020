@@ -20,6 +20,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.sps.data.Route;
+import com.google.sps.data.UserImage;
 import com.google.sps.data.UserAccessType;
 import java.io.IOException;
 import java.util.*;
@@ -79,6 +80,7 @@ public class ProfileRoutes extends HttpServlet {
         // TODO(#14): Catch more specific exceptions.
       }
     }
+
     Gson gson = new Gson();
     String json = gson.toJson(connectedRoutes);
 
