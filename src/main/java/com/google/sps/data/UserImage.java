@@ -14,7 +14,6 @@
 
 package com.google.sps.data;
 
-import com.google.cloud.storage.Acl;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
