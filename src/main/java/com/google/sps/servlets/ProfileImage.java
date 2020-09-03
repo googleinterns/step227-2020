@@ -15,7 +15,10 @@
 package com.google.sps.servlets;
 
 import com.google.appengine.api.datastore.*;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.sps.data.UserImage;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -29,20 +32,51 @@ public class ProfileImage extends HttpServlet {
   /** Store user's image. */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // get the file chosen by the user
     try {
+      UserService userService = UserServiceFactory.getUserService();
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+      String userId = userService.getCurrentUser().getUserId();
+      Key userKey = KeyFactory.createKey("User", userId);
+      Entity userEntity = datastore.get(userKey);
+      String fileName = (String) userEntity.getProperty("avatarName");
+
       Part filePart = request.getPart("avatar");
 
       // get the InputStream to store the file somewhere
       InputStream fileInputStream = filePart.getInputStream();
 
       UserImage.uploadObject(
-          "theglobetrotter-step-2020", filePart.getSubmittedFileName(), fileInputStream);
+          "theglobetrotter-step-2020", fileName, fileInputStream);
     } catch (Exception e) {
-      System.out.println("Catch error while saving profile image");
+      System.out.println("Caught an error while saving profile image");
       System.out.println(e);
     }
 
     response.sendRedirect("/profile.html");
+  }
+
+  /** Return response with the name for user's profile picture. */
+  @Override
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String fileName = "default.png";
+    try {
+      UserService userService = UserServiceFactory.getUserService();
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+      String userId = userService.getCurrentUser().getUserId();
+      Key userKey = KeyFactory.createKey("User", userId);
+      Entity userEntity = datastore.get(userKey);
+      fileName = (String) userEntity.getProperty("avatarName");
+    } catch (Exception e) {
+      System.out.println("Caught an  error while returning name for profile image");
+      System.out.println(e);
+    }
+
+    Gson gson = new Gson();
+
+    // Respond with the user details.
+    response.setContentType("application/json;");
+    response.getWriter().println(gson.toJson(fileName));
   }
 }

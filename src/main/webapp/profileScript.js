@@ -152,11 +152,25 @@ function showSubmitAvatar() {
   document.getElementById("submit-avatar").classList.toggle("show");
 }
 
-function loadRoutes() {
-  fetch("/user-avatar")
+function showAvatar() {
+  fetch("/profile-image", {
+    method: "GET",
+  })
     .then((response) => response.json())
     .then((avatarName) => {
-      document.getElementById("avatar").innerHTML =
-        '<img src="' + avatarName + '"' + 'alt="Profile picture"/>';
+      try {
+        document.getElementById("avatar-image").innerHTML =
+          '<img src="https://storage.cloud.google.com/user-image-globes/' +
+          avatarName +
+          '"' +
+          'alt="Profile picture"/>';
+      } catch (exception) {
+        console.log("No access to personalized avatar");
+        document.getElementById("avatar-image").innerHTML =
+          '<img src="https://storage.cloud.google.com/user-image-globes/' +
+          "default.png" +
+          '"' +
+          'alt="Profile picture"/>';
+      }
     });
 }

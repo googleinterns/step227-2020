@@ -64,7 +64,9 @@ public class LoginServlet extends HttpServlet {
         datastore.get(userKey);
         // TODO(#16): Use query instead of get.
       } catch (Exception e) {
-        datastore.put(new Entity("User", userId));
+        Entity newUser = new Entity("User", userId);
+        newUser.setProperty("avatarName", userId + ".png");
+        datastore.put(newUser);
       }
 
     } else {
