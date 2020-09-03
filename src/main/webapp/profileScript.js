@@ -58,6 +58,7 @@ function showFavPlaceDetails(contentName, createClosePopup = true) {
 function loadUserInfo() {
   addLogoutLink();
   loadRoutes();
+  showAvatar();
   console.log("Load user's routes");
 
   fetch("/user-info")
@@ -145,4 +146,17 @@ function addRoute(newRoute) {
   } else {
     document.getElementById("future-routes").appendChild(card);
   }
+}
+
+function showSubmitAvatar() {
+  document.getElementById("submit-avatar").classList.toggle("show");
+}
+
+function loadRoutes() {
+  fetch("/user-avatar")
+    .then((response) => response.json())
+    .then((avatarName) => {
+      document.getElementById("avatar").innerHTML =
+        '<img src="' + avatarName + '"' + 'alt="Profile picture"/>';
+    });
 }

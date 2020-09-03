@@ -14,6 +14,7 @@
 
 package com.google.sps.data;
 
+import com.google.cloud.storage.Acl;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
@@ -29,7 +30,7 @@ public class UserImage {
 
     Storage storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService();
     BlobId blobId = BlobId.of(bucketName, objectName);
-    BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+    BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("image/png").build();
     storage.createFrom(blobInfo, fileToUpload);
 
     System.out.println("File " + " uploaded to bucket " + bucketName + " as " + objectName);
