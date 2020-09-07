@@ -73,7 +73,7 @@ public class ProfileRoutes extends HttpServlet {
         connectedRoutes.add(newRoute);
         i++;
       }
-    String json = gson.toJson(connectedRoutes);
+      String json = gson.toJson(connectedRoutes);
 
       // Return response to the request.
       response.setContentType("application/json;");
