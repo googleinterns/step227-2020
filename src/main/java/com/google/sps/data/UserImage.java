@@ -24,7 +24,6 @@ import java.io.InputStream;
 public class UserImage {
   public static void uploadObject(String projectId, String objectName, InputStream fileToUpload)
       throws IOException {
-
     String bucketName = "user-image-globes";
 
     Storage storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService();

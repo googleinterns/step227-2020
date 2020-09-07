@@ -43,13 +43,12 @@ public class ProfileImage extends HttpServlet {
 
       Part filePart = request.getPart("avatar");
 
-      // get the InputStream to store the file somewhere
+      // Get the InputStream to store the file until it processed.
       InputStream fileInputStream = filePart.getInputStream();
 
       UserImage.uploadObject("theglobetrotter-step-2020", fileName, fileInputStream);
     } catch (Exception e) {
-      System.out.println("Caught an error while saving profile image");
-      System.out.println(e);
+      // TODO(#14): Catch more specific exceptions.
     }
 
     response.sendRedirect("/profile.html");

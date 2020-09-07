@@ -158,19 +158,10 @@ function showAvatar() {
   })
     .then((response) => response.json())
     .then((avatarName) => {
-      try {
-        document.getElementById("avatar-image").innerHTML =
-          '<img src="https://storage.cloud.google.com/user-image-globes/' +
-          avatarName +
-          '"' +
-          'alt="Profile picture"/>';
-      } catch (exception) {
-        console.log("No access to personalized avatar");
-        document.getElementById("avatar-image").innerHTML =
-          '<img src="https://storage.cloud.google.com/user-image-globes/' +
-          "default.png" +
-          '"' +
-          'alt="Profile picture"/>';
-      }
+      let avatarImage = document.createElement("img");
+      avatarImage.src =
+        "https://storage.cloud.google.com/user-image-globes/" + avatarName;
+      avatarImage.alt = "Profile picture";
+      document.getElementById("avatar-image").appendChild(avatarImage);
     });
 }
