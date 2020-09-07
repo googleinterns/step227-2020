@@ -57,6 +57,7 @@ public class ProfileRoutes extends HttpServlet {
 
       Route newRoute;
       int i = 0;
+      // Store all connected routes in the connectedRoutes list.
       for (Entity connection : routesList.values()) {
         newRoute =
             new Route(
