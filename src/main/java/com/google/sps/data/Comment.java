@@ -14,9 +14,22 @@
 
 package com.google.sps.data;
 
-/** Represents the status of a route sent to the "/storeRoute" servlet. */
-public enum RouteStatus {
-  NEW,
-  COPY,
-  EDIT
+/** Represents a comment written by a user. */
+public final class Comment {
+
+  private final String commentText;
+  private final String nickname;
+
+  public Comment(String commentText, String nickname) {
+    this.commentText = commentText;
+    this.nickname = nickname;
+  }
+
+  public String getCommentText() {
+    return commentText;
+  }
+
+  public String getNickname() {
+    return nickname;
+  }
 }

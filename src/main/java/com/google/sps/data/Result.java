@@ -14,13 +14,22 @@
 
 package com.google.sps.data;
 
-public class Result {
-  private String message;
+/** Represents the response of the servlets, including their success status. */
+public class Result<T> {
   private boolean success;
+  private String message;
+  private T object;
 
-  public Result(String message, boolean success) {
+  public Result(boolean success, String message, T object) {
     this.message = message;
     this.success = success;
+    this.object = object;
+  }
+
+  public Result(boolean success, String message) {
+    this.message = message;
+    this.success = success;
+    this.object = null;
   }
 
   public String getMessage() {
@@ -31,7 +40,15 @@ public class Result {
     return success;
   }
 
+  public T getObject() {
+    return object;
+  }
+
   public void setMessage(String message) {
     this.message = message;
+  }
+
+  public void setObject(T object) {
+    this.object = object;
   }
 }
