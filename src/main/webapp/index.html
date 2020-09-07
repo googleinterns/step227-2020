@@ -27,7 +27,7 @@
     <script
       async
       defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAv-H8pVyOLYFGTWRaYz0uI_o84wj6oNCg&callback=initMap&libraries=&v=weekly"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBr7bKYN0cNzU6h7sMT7mn_Vw19O_kOAt0&callback=initMap&libraries=places&v=weekly"
       type="text/javascript"
     ></script>
   </head>
@@ -56,7 +56,7 @@
 
     <!-- Main section -->
     <div id="map-section">
-      <div id="login-required">
+      <div id="login-required" class="centered">
         <p>Login to start creating your trips!</p>
       </div>
       <div id="route-content">
@@ -122,6 +122,12 @@
         </button>
         <div id="additional"></div>
       </div>
+      <input
+        id="pac-input"
+        class="controls"
+        type="text"
+        placeholder="Search Box"
+      />
       <div id="map"></div>
     </div>
 

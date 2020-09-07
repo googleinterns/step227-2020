@@ -16,9 +16,11 @@ package com.google.sps.servlets;
 
 import com.google.appengine.api.datastore.*;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
+import com.google.sps.data.Comment;
 import com.google.sps.data.Result;
 import java.io.IOException;
 import java.util.*;
@@ -28,10 +30,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Responsible for storing comments. */
 @SuppressWarnings("serial")
-@WebServlet("/post-comment")
-public class PostComments extends HttpServlet {
+@WebServlet("/comments")
+public class Comments extends HttpServlet {
   class CommentData {
     Long routeId;
     String commentText;
@@ -51,6 +52,7 @@ public class PostComments extends HttpServlet {
   }
 
   @Override
+  /** Responsible for storing comments. */
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -59,7 +61,7 @@ public class PostComments extends HttpServlet {
 
     // Check if user is logged in.
     if (!userService.isUserLoggedIn()) {
-      Result userError = new Result("You are not logged in!", false);
+      Result<Comment> userError = new Result<Comment>(false, "You are not logged in!");
       response.getWriter().println(gson.toJson(userError));
       return;
     }
@@ -80,24 +82,53 @@ public class PostComments extends HttpServlet {
 
     try {
       Entity userEntity = datastore.get(userKey);
+      String nickname = (String) userEntity.getProperty("nickname");
 
       // Store the comments as entities.
       Entity commentEntity = new Entity("Comment", routeKey);
       commentEntity.setProperty("text", comment);
-      commentEntity.setProperty("nickname", userEntity.getProperty("nickname"));
+      commentEntity.setProperty("nickname", nickname);
 
       datastore.put(commentEntity);
-      Result commentSubmitted = new Result("Comment submitted!", true);
+      Result<Comment> commentSubmitted =
+          new Result<Comment>(true, "Comment submitted", new Comment(comment, nickname));
       response.getWriter().println(gson.toJson(commentSubmitted));
 
-    } catch (Exception e) {
-      Result userError = new Result("User not found!", false);
+    } catch (EntityNotFoundException e) {
+      Result<Comment> userError = new Result<Comment>(false, "User not found!");
       response.getWriter().println(gson.toJson(userError));
     }
   }
 
+  @Override
+  /** Returns all the comments coresponding with a specific routeId. */
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    Gson gson = new Gson();
+    Long routeId = Long.parseLong(request.getParameter("routeId"));
+
+    Key routeKey = KeyFactory.createKey("Route", routeId);
+    Query commentsQuery = new Query("Comment").setAncestor(routeKey);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery queriedComments = datastore.prepare(commentsQuery);
+
+    List<Comment> comments = new ArrayList<Comment>();
+
+    for (Entity commentEntity : queriedComments.asIterable()) {
+      String commentText = (String) commentEntity.getProperty("text");
+      String nickname = (String) commentEntity.getProperty("nickname");
+
+      Comment comment = new Comment(commentText, nickname);
+      comments.add(comment);
+    }
+
+    // Responds with the resulted list.
+    response.setContentType("application/json;");
+    response.getWriter().println(gson.toJson(comments));
+  }
+
   /**
-   * Return the request parameter, or the default value if the parameter was not specified by the
+   * Returns the request parameter, or the default value if the parameter was not specified by the
    * client.
    */
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
