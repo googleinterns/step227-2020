@@ -67,8 +67,7 @@ public class ProfileImage extends HttpServlet {
       Entity userEntity = datastore.get(userKey);
       fileName = (String) userEntity.getProperty("avatarName");
     } catch (Exception e) {
-      System.out.println("Caught an  error while returning name for profile image");
-      System.out.println(e);
+      // TODO(#14): Catch more specific exceptions.
     }
 
     Gson gson = new Gson();
