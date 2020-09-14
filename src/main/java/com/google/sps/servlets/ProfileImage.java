@@ -40,8 +40,10 @@ public class ProfileImage extends HttpServlet {
       Key userKey = KeyFactory.createKey("User", userId);
       Entity userEntity = datastore.get(userKey);
       String fileName = (String) userEntity.getProperty("avatarName");
-      if (fileName == "default.png") {
+      if (fileName.equals("default.png")) {
+        fileName = userId + ".png";
         userEntity.setProperty("avatarName", userId + ".png");
+        datastore.put(userEntity);
       }
 
       Part filePart = request.getPart("avatar");
