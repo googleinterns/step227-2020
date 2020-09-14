@@ -42,7 +42,7 @@ public class ProfileImage extends HttpServlet {
       String fileName = (String) userEntity.getProperty("avatarName");
       if (fileName.equals("default.png")) {
         fileName = userId + ".png";
-        userEntity.setProperty("avatarName", userId + ".png");
+        userEntity.setProperty("avatarName", fileName);
         datastore.put(userEntity);
       }
 
