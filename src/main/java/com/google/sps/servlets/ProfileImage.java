@@ -37,7 +37,12 @@ public class ProfileImage extends HttpServlet {
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
       String userId = userService.getCurrentUser().getUserId();
-      String fileName = userId + ".png";
+      Key userKey = KeyFactory.createKey("User", userId);
+      Entity userEntity = datastore.get(userKey);
+      String fileName = (String) userEntity.getProperty("avatarName");
+      if (fileName == "default.png") {
+        userEntity.setProperty("avatarName", userId + ".png");
+      }
 
       Part filePart = request.getPart("avatar");
 
@@ -61,7 +66,9 @@ public class ProfileImage extends HttpServlet {
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
       String userId = userService.getCurrentUser().getUserId();
-      fileName = userId + ".png";
+      Key userKey = KeyFactory.createKey("User", userId);
+      Entity userEntity = datastore.get(userKey);
+      fileName = (String) userEntity.getProperty("avatarName");
     } catch (Exception e) {
       // TODO(#14): Catch more specific exceptions.
     }

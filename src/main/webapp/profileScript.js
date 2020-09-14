@@ -235,11 +235,6 @@ function showAvatar() {
       let avatarImage = document.createElement("img");
       avatarImage.src =
         "https://storage.cloud.google.com/user-image-globes/" + avatarName;
-      avatarImage.onerror = function () {
-        this.src =
-          "https://storage.cloud.google.com/user-image-globes/default.png";
-        this.onerror = null;
-      };
       avatarImage.alt = "Profile picture";
       document.getElementById("avatar-image").appendChild(avatarImage);
     });
