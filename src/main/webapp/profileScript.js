@@ -104,8 +104,9 @@ function addRoute(newRoute) {
   let container = document.createElement("div");
 
   let routeImg = document.createElement("img");
-  routeImg.src = "pictures/praga-small.jpg";
-  routeImg.alt = "praga";
+  console.log(newRoute["imageName"]);
+  routeImg.src = "https://storage.cloud.google.com/route-image-globes/" + newRoute["imageName"];
+  routeImg.alt = "Route image";
 
   let routeDetails = addRouteDetails(newRoute);
   let routeRating = createRatingElement(newRoute);
@@ -160,15 +161,31 @@ function addRouteDetails(newRoute) {
     markAsCompleted(newRoute);
   };
 
+  let addImage = document.createElement("button");
+  completedButton.className = "action-button";
+  completedButton.innerHTML = "Change image";
+  completedButton.onclick = function () {
+    addRouteImageForm(newRoute);
+  };
+
   routeDetails.appendChild(routeName);
   routeDetails.appendChild(viewButton);
   routeDetails.appendChild(editButton);
+  routeDetails.appendChild(addImage);
 
   if (!newRoute.isCompleted) {
     routeDetails.appendChild(completedButton);
   }
 
   return routeDetails;
+}
+
+function addRouteImageForm(newRoute) {
+  let imageForm = document.createElement("form");
+  imageForm.action = "/route-image";
+  imageForm.method = "POST";
+  imageForm.enctype="multipart/form-data"
+  fetch()
 }
 
 function createRatingElement(newRoute) {
