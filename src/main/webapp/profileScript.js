@@ -108,7 +108,7 @@ function addRoute(newRoute) {
   routeImg.src = "https://storage.cloud.google.com/route-image-globes/" + newRoute["imageName"];
   routeImg.alt = "Route image";
 
-  let routeDetails = addRouteDetails(newRoute);
+  let routeDetails = addRouteDetails(container, newRoute);
   let routeRating = createRatingElement(newRoute);
 
   card.classList.add("card");
@@ -131,7 +131,7 @@ function addRoute(newRoute) {
   }
 }
 
-function addRouteDetails(newRoute) {
+function addRouteDetails(container, newRoute) {
   let routeDetails = document.createElement("div");
 
   let routeName = document.createElement("p");
@@ -162,10 +162,10 @@ function addRouteDetails(newRoute) {
   };
 
   let addImage = document.createElement("button");
-  completedButton.className = "action-button";
-  completedButton.innerHTML = "Change image";
-  completedButton.onclick = function () {
-    addRouteImageForm(newRoute);
+  addImage.className = "action-button";
+  addImage.innerHTML = "Change image";
+  addImage.onclick = function() {
+    addRouteImageForm(container, newRoute);
   };
 
   routeDetails.appendChild(routeName);
@@ -180,12 +180,33 @@ function addRouteDetails(newRoute) {
   return routeDetails;
 }
 
-function addRouteImageForm(newRoute) {
+function addRouteImageForm(container, newRoute) {
   let imageForm = document.createElement("form");
   imageForm.action = "/route-image";
   imageForm.method = "POST";
-  imageForm.enctype="multipart/form-data"
-  fetch()
+  imageForm.enctype="multipart/form-data";
+  imageForm.id = "route-image-form";
+
+  let imageInput = document.createElement("input");
+  imageInput.type = "file";
+  imageInput.id = "route-image";
+  imageInput.name = "route-image";
+  imageInput.accept = "image/png, image/jpeg";
+
+  let imageName = document.createElement("input");
+  imageName.type = "text";
+  imageName.value = newRoute["routeId"];
+  imageName.id = "name-route";
+  imageName.name = "name-route";
+
+  let submitButton = document.createElement("input");
+  submitButton.type = "submit";
+  submitButton.value = "Submit";
+
+  imageForm.appendChild(imageInput);
+  imageForm.appendChild(imageName);
+  imageForm.appendChild(submitButton);
+  container.appendChild(imageForm);
 }
 
 function createRatingElement(newRoute) {

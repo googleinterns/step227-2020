@@ -18,7 +18,7 @@ import com.google.appengine.api.datastore.*;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
-import com.google.sps.data.UserImage;
+import com.google.sps.data.Images;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -38,6 +38,7 @@ public class ProfileImage extends HttpServlet {
 
       String userId = userService.getCurrentUser().getUserId();
       Key userKey = KeyFactory.createKey("User", userId);
+      System.out.println(userKey);
       Entity userEntity = datastore.get(userKey);
       String fileName = (String) userEntity.getProperty("avatarName");
       if (fileName.equals("default.png")) {
@@ -51,7 +52,7 @@ public class ProfileImage extends HttpServlet {
       // Get the InputStream to store the file until it processed.
       InputStream fileInputStream = filePart.getInputStream();
 
-      UserImage.uploadObject("theglobetrotter-step-2020", fileName, fileInputStream);
+      Images.uploadObject("user-image-globes", "theglobetrotter-step-2020", fileName, fileInputStream);
     } catch (Exception e) {
       // TODO(#14): Catch more specific exceptions.
     }
