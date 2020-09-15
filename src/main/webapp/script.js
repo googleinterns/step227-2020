@@ -106,7 +106,8 @@ function createRouteCard(route) {
   };
 
   let routeImage = document.createElement("img");
-  routeImage.src = "https://storage.cloud.google.com/route-image-globes/" + route["imageName"];
+  routeImage.src =
+    "https://storage.cloud.google.com/route-image-globes/" + route["imageName"];
   routeImage.alt = "Route image";
 
   routeDetails.appendChild(routeName);

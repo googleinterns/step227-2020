@@ -104,7 +104,9 @@ function addRoute(newRoute) {
   let container = document.createElement("div");
 
   let routeImg = document.createElement("img");
-  routeImg.src = "https://storage.cloud.google.com/route-image-globes/" + newRoute["imageName"];
+  routeImg.src =
+    "https://storage.cloud.google.com/route-image-globes/" +
+    newRoute["imageName"];
   routeImg.alt = "Route image";
 
   let routeDetails = addRouteDetails(container, newRoute);
@@ -163,7 +165,7 @@ function addRouteDetails(container, newRoute) {
   let addImage = document.createElement("button");
   addImage.className = "action-button";
   addImage.innerHTML = "Change image";
-  addImage.onclick = function() {
+  addImage.onclick = function () {
     addRouteImageForm(container, newRoute);
   };
 
@@ -183,7 +185,7 @@ function addRouteImageForm(container, newRoute) {
   let imageForm = document.createElement("form");
   imageForm.action = "/route-image";
   imageForm.method = "POST";
-  imageForm.enctype="multipart/form-data";
+  imageForm.enctype = "multipart/form-data";
   imageForm.id = "route-image-form";
 
   let imageInput = document.createElement("input");
