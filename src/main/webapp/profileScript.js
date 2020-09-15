@@ -104,7 +104,6 @@ function addRoute(newRoute) {
   let container = document.createElement("div");
 
   let routeImg = document.createElement("img");
-  console.log(newRoute["imageName"]);
   routeImg.src = "https://storage.cloud.google.com/route-image-globes/" + newRoute["imageName"];
   routeImg.alt = "Route image";
 

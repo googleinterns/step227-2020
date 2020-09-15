@@ -37,18 +37,14 @@ public class RouteImage extends HttpServlet {
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
       String routeId = request.getParameter("name-route");
-      System.out.println(routeId);
-      Key routeKey = KeyFactory.createKey("Route", routeId);
-      System.out.println("HOLA1");
+      Key routeKey = KeyFactory.createKey("Route", Long.parseLong(routeId));
       Entity routeEntity = datastore.get(routeKey);
-      System.out.println("HOLA2");
       String fileName = (String) routeEntity.getProperty("imageName");
       if (fileName.equals("globe.jpg")) {
         fileName = routeId + ".png";
         routeEntity.setProperty("imageName", fileName);
         datastore.put(routeEntity);
       }
-      System.out.println("HOLA3");
 
 
       Part filePart = request.getPart("route-image");
@@ -57,9 +53,7 @@ public class RouteImage extends HttpServlet {
       InputStream fileInputStream = filePart.getInputStream();
 
       Images.uploadObject("route-image-globes", "theglobetrotter-step-2020", fileName, fileInputStream);
-      System.out.println("HOLA4");
     } catch (Exception e) {
-      System.out.println(e);
       // TODO(#14): Catch more specific exceptions.
     }
 

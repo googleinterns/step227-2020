@@ -106,8 +106,8 @@ function createRouteCard(route) {
   };
 
   let routeImage = document.createElement("img");
-  routeImage.src = "pictures/praga-small.jpg";
-  routeImage.alt = "praga";
+  routeImage.src = "https://storage.cloud.google.com/route-image-globes/" + route["imageName"];
+  routeImage.alt = "Route image";
 
   routeDetails.appendChild(routeName);
   routeDetails.appendChild(viewButton);
