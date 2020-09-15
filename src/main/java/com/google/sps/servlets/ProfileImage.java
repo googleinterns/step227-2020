@@ -52,7 +52,8 @@ public class ProfileImage extends HttpServlet {
       // Get the InputStream to store the file until it processed.
       InputStream fileInputStream = filePart.getInputStream();
 
-      Images.uploadObject("user-image-globes", "theglobetrotter-step-2020", fileName, fileInputStream);
+      Images.uploadObject(
+          "user-image-globes", "theglobetrotter-step-2020", fileName, fileInputStream);
     } catch (Exception e) {
       // TODO(#14): Catch more specific exceptions.
     }

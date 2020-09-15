@@ -15,9 +15,6 @@
 package com.google.sps.servlets;
 
 import com.google.appengine.api.datastore.*;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
-import com.google.gson.Gson;
 import com.google.sps.data.Images;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,13 +43,13 @@ public class RouteImage extends HttpServlet {
         datastore.put(routeEntity);
       }
 
-
       Part filePart = request.getPart("route-image");
 
       // Get the InputStream to store the file until it processed.
       InputStream fileInputStream = filePart.getInputStream();
 
-      Images.uploadObject("route-image-globes", "theglobetrotter-step-2020", fileName, fileInputStream);
+      Images.uploadObject(
+          "route-image-globes", "theglobetrotter-step-2020", fileName, fileInputStream);
     } catch (Exception e) {
       // TODO(#14): Catch more specific exceptions.
     }
