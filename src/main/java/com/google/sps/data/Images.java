@@ -22,7 +22,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class Images {
-  public static void uploadObject(String bucketName, String projectId, String objectName, InputStream fileToUpload)
+  public static void uploadObject(
+      String bucketName, String projectId, String objectName, InputStream fileToUpload)
       throws IOException {
 
     Storage storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService();
