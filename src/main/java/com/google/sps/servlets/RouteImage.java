@@ -55,7 +55,7 @@ public class RouteImage extends HttpServlet {
 
       int i = 0;
       for (Entity connection : routesList.values()) {
-        if(Long.toString(connection.getKey().getId()).equals(routeId)) {
+        if (Long.toString(connection.getKey().getId()).equals(routeId)) {
           int numericValue = ((Long) results.get(i).getProperty("userAccess")).intValue();
           if (UserAccessType.getFromValue(numericValue) == UserAccessType.VIEWER) {
             userAccess = false;
