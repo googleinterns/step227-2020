@@ -197,8 +197,8 @@ function addRouteImageForm(container, newRoute) {
   let imageName = document.createElement("input");
   imageName.type = "text";
   imageName.value = newRoute["routeId"];
-  imageName.id = "name-route";
-  imageName.name = "name-route";
+  imageName.id = "route-id";
+  imageName.name = "route-id";
 
   let submitButton = document.createElement("input");
   submitButton.type = "submit";

@@ -15,7 +15,10 @@
 package com.google.sps.servlets;
 
 import com.google.appengine.api.datastore.*;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.sps.data.Images;
+import com.google.sps.data.UserAccessType;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -32,24 +35,53 @@ public class RouteImage extends HttpServlet {
     try {
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      String routeId = request.getParameter("route-id");
+      Boolean userAccess = true;
 
-      String routeId = request.getParameter("name-route");
-      Key routeKey = KeyFactory.createKey("Route", Long.parseLong(routeId));
-      Entity routeEntity = datastore.get(routeKey);
-      String fileName = (String) routeEntity.getProperty("imageName");
-      if (fileName.equals("globe.jpg")) {
-        fileName = routeId + ".png";
-        routeEntity.setProperty("imageName", fileName);
-        datastore.put(routeEntity);
+      UserService userService = UserServiceFactory.getUserService();
+      String userId = userService.getCurrentUser().getUserId();
+      Key userKey = KeyFactory.createKey("User", userId);
+
+      // Get all connected routes.
+      Query query = new Query("RouteUserLink").setAncestor(userKey);
+      List<Entity> results = datastore.prepare(query).asList(FetchOptions.Builder.withDefaults());
+
+      List<Key> routesKeys = new ArrayList<Key>();
+      for (int i = 0; i < results.size(); i++) {
+        routesKeys.add(KeyFactory.createKey("Route", (Long) results.get(i).getProperty("routeId")));
       }
 
-      Part filePart = request.getPart("route-image");
+      Map<Key, Entity> routesList = datastore.get(routesKeys);
 
-      // Get the InputStream to store the file until it processed.
-      InputStream fileInputStream = filePart.getInputStream();
+      int i = 0;
+      for (Entity connection : routesList.values()) {
+        if(Long.toString(connection.getKey().getId()).equals(routeId)) {
+          int numericValue = ((Long) results.get(i).getProperty("userAccess")).intValue();
+          if (UserAccessType.getFromValue(numericValue) == UserAccessType.VIEWER) {
+            userAccess = false;
+          }
+        }
+        i++;
+      }
 
-      Images.uploadObject(
-          "route-image-globes", "theglobetrotter-step-2020", fileName, fileInputStream);
+      if (userAccess) {
+        Key routeKey = KeyFactory.createKey("Route", Long.parseLong(routeId));
+        Entity routeEntity = datastore.get(routeKey);
+        String fileName = (String) routeEntity.getProperty("imageName");
+        if (fileName.equals("globe.jpg")) {
+          fileName = routeId + ".png";
+          routeEntity.setProperty("imageName", fileName);
+          datastore.put(routeEntity);
+        }
+
+        Part filePart = request.getPart("route-image");
+
+        // Get the InputStream to store the file until it processed.
+        InputStream fileInputStream = filePart.getInputStream();
+
+        Images.uploadObject(
+            "route-image-globes", "theglobetrotter-step-2020", fileName, fileInputStream);
+      }
     } catch (Exception e) {
       // TODO(#14): Catch more specific exceptions.
     }

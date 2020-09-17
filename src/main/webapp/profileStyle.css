@@ -36,7 +36,7 @@
 
 #route-image-form {
   position: absolute;
-  bottom: 160px;
+  bottom: 60px;
   padding: 7px;
   background: rgba(255, 255, 255, 0.95);
   border: 1px solid rgb(202, 202, 202);
@@ -44,7 +44,7 @@
   z-index: 1;
 }
 
-#name-route {
+#route-id {
   display: none;
 }
 
