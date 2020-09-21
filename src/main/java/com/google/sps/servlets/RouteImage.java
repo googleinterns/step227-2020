@@ -15,9 +15,7 @@
 package com.google.sps.servlets;
 
 import com.google.appengine.api.datastore.*;
-import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.FetchOptions;
-import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
@@ -25,7 +23,6 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.sps.data.Images;
-import com.google.sps.data.UserAccessType;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -50,15 +47,13 @@ public class RouteImage extends HttpServlet {
       Key userKey = KeyFactory.createKey("User", userId);
 
       // Check if user has access to change the image.
-      Filter routeIdFilter =
-          new FilterPredicate("routeId", FilterOperator.EQUAL, routeId);
-      Filter userIdFilter =
-          new FilterPredicate("userId", FilterOperator.EQUAL, userId);
+      Filter routeIdFilter = new FilterPredicate("routeId", FilterOperator.EQUAL, routeId);
+      Filter userIdFilter = new FilterPredicate("userId", FilterOperator.EQUAL, userId);
       Query routeLink = new Query("RouteUserLink").setFilter(routeIdFilter);
       routeLink.setFilter(userIdFilter);
       List<Entity> routeUserLink =
           datastore.prepare(routeLink).asList(FetchOptions.Builder.withDefaults());
-      
+
       if (routeUserLink.isEmpty()) {
         userAccess = false;
       }
