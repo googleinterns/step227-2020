@@ -20,28 +20,29 @@ function loadPage() {
 
 //** Checks login status and display HTML elements accordingly. */
 async function checkLog() {
-  var loggedIn;
   const response = await fetch("/login");
   const loginInfo = await response.json();
 
-  // Add correspondent link to the log button.
-  const logButton = document.getElementById("log-button");
-  logButton.href = loginInfo.actionUrl;
+  if (loginInfo.success) {
+    // Add correspondent link to the log button.
+    const logButton = document.getElementById("log-button");
+    logButton.href = loginInfo.object.actionUrl;
 
-  // User is logged in.
-  if (loginInfo.loggedIn === true) {
-    document.getElementById("profile").style.visibility = "visible";
-    logButton.innerText = "LOGOUT";
-    document.getElementById("route-content").style.visibility = "visible";
-    loggedIn = true;
-    // User is not logged in.
+    if (loginInfo.object.loggedIn === true) {
+      // User is logged in.
+      document.getElementById("profile").style.visibility = "visible";
+      logButton.innerText = "LOGOUT";
+      document.getElementById("route-content").style.visibility = "visible";
+    } else {
+      // User is not logged in.
+      document.getElementById("profile").style.visibility = "hidden";
+      logButton.innerText = "LOGIN";
+      document.getElementById("login-required").style.visibility = "visible";
+    }
   } else {
-    document.getElementById("profile").style.visibility = "hidden";
-    logButton.innerText = "LOGIN";
-    document.getElementById("login-required").style.visibility = "visible";
-    loggedIn = false;
+    alert(loginInfo.message);
+    window.open(loginInfo.object.actionUrl, "_self");
   }
-  return loggedIn;
 }
 
 /** Fetches routes from the server and adds them to the suggestions section. */
@@ -125,6 +126,7 @@ function viewRoute(route) {
   document.getElementById("login-required").className = "move-left";
   removeRouteInfo();
   initInactiveMap();
+  initRoute();
 
   document.getElementById("create-route-button").style.visibility = "hidden";
   document.getElementById("share-with-friends-button").style.visibility =
@@ -139,6 +141,7 @@ function viewRoute(route) {
 
   // Fill the table and add markers on the map
   let tabel = document.getElementById("places-table");
+  var waypoints = [];
   for (var i = 0; i < route.routeMarkers.length; i++) {
     let marker = route.routeMarkers[i];
     let newPlace = document.createElement("li");
@@ -165,7 +168,29 @@ function viewRoute(route) {
         "</div>"
     );
     infowindow.open(map, mapMarker);
+
+    if (i > 0 || i < route.routeMarkers.length - 1) {
+      let waypointLatLng = new google.maps.LatLng({
+        lat: marker.lat,
+        lng: marker.lng,
+      });
+      waypoints.push({
+        location: waypointLatLng,
+        stopover: true,
+      });
+    }
   }
+
+  let originLatLng = new google.maps.LatLng({
+    lat: route.routeMarkers[0].lat,
+    lng: route.routeMarkers[0].lng,
+  });
+  let destinationLatLng = new google.maps.LatLng({
+    lat: route.routeMarkers[route.routeMarkers.length - 1].lat,
+    lng: route.routeMarkers[route.routeMarkers.length - 1].lng,
+  });
+
+  calculateAndDisplayRoute(waypoints, originLatLng, destinationLatLng);
 
   let ratingScore = generateRating(route);
   let commentsPanel = createCommentsPanel(route);
@@ -176,7 +201,7 @@ function viewRoute(route) {
   backButton.classList.add("back-button");
   backButton.innerHTML = "BACK TO ROUTE CREATION";
   backButton.onclick = function () {
-    location.reload();
+    window.open("/index.html", "_self");
   };
   let additionalContent = document.getElementById("additional");
   additionalContent.innerHTML = "";
