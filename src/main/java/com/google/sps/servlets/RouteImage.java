@@ -47,8 +47,8 @@ public class RouteImage extends HttpServlet {
       Key userKey = KeyFactory.createKey("User", userId);
 
       // Check if user has access to change the image.
-      Filter routeIdFilter = new FilterPredicate("routeId", FilterOperator.EQUAL, routeId);
-      Filter userIdFilter = new FilterPredicate("userId", FilterOperator.EQUAL, userId);
+      Filter routeIdFilter = new FilterPredicate("routeId", FilterOperator.EQUAL, Long.parseLong(routeId));
+      Filter userIdFilter = new FilterPredicate("userId", FilterOperator.EQUAL, Long.parseLong(userId));
       Query routeLink = new Query("RouteUserLink").setFilter(routeIdFilter);
       routeLink.setFilter(userIdFilter);
       List<Entity> routeUserLink =
