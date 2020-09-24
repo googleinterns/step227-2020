@@ -14,12 +14,6 @@
 
 package com.google.sps.servlets;
 
-import com.google.sps.data.Marker;
-import com.google.sps.data.Route;
-import com.google.sps.data.RouteStatus;
-import com.google.gson.Gson;
-import java.util.stream.Collectors;
-
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -31,13 +25,17 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;
 import com.google.common.collect.ImmutableMap;
-
+import com.google.gson.Gson;
+import com.google.sps.data.Marker;
+import com.google.sps.data.Route;
+import com.google.sps.data.RouteStatus;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.*;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.After;
@@ -46,7 +44,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
 public final class RoutesStoringTest {
@@ -96,8 +93,9 @@ public final class RoutesStoringTest {
     List<String> editorsArrayTemp = new ArrayList<>();
     List<Marker> routeMarkers = new ArrayList<>();
     RouteStatus status = RouteStatus.NEW;
-    Route temp = new Route(111111, "routeName", true, true, 0, 0, routeMarkers,
-        editorsArrayTemp, 1, 1.0, status);
+    Route temp =
+        new Route(
+            111111, "routeName", true, true, 0, 0, routeMarkers, editorsArrayTemp, 1, 1.0, status);
     Gson gson = new Gson();
     String json = gson.toJson(temp);
     Reader inputString = new StringReader(json);
