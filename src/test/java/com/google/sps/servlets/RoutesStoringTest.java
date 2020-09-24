@@ -73,11 +73,7 @@ public final class RoutesStoringTest {
         .setEnvIsAdmin(true);
 
     helper.setUp();
-    try {
-      localUserServices.setUp();
-    } catch (Exception e) {
-      System.out.println(e);
-    }
+    localUserServices.setUp();
   }
 
   @After
